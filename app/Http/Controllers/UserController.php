@@ -12,6 +12,7 @@ class UserController extends Controller
     public function index()
     {
         $data =  User::all();
+        // return response()->json($data);
         return view('pages.user', ['data' => $data]);
     }
 

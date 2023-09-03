@@ -64,10 +64,12 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <input type="hidden" name="id" id="dataId">
-                        <label>Nama Jabatan</label>
-                        <input id="nama_jabatan" class="form-control" name="nama_jabatan" type="text" placeholder="Jabatan" required>
+                        <div class="col-12 col-md-12">
+                            <label class="form-label">Jabatan</label>
+                            <input type="text" class="form-control" name="nama_jabatan" id="nama_jabatan" placeholder="Jabatan" required>
+                            <span class="text-danger error-msg small" id="jabatan-alert"></span>
+                        </div>
                     </div>
-                    <span class="text-danger small" id="nama-alert"></span>
                 </div>
                 <div class="modal-footer">
                     <button type="reset" class="btn  btn-secondary" data-dismiss="modal" >Close</button>
@@ -100,7 +102,7 @@
             $('#dataId'     ).val    (''                    );
             $('#formData'   ).trigger("reset"               );
             $('#modal-data' ).modal  ('show'                );
-            $('#nama-alert' ).html   (''                    );
+            $('#jabatan-alert' ).html   (''                    );
         });
 
         $(document).on('click', '#editItem', function () {
@@ -108,9 +110,9 @@
             $.get(`${baseUrl}/api/w1/jabatan/` + _id, function (res) {
                 $('.modal-title' ).html ("Formulir Edit Data" );
                 $('#btn-simpan'  ).val  ("edit-user"          );
-                $('#nama-alert'  ).html ('                   ');
+                $('#jabatan-alert'  ).html ('                   ');
                 $('#modal-data'  ).modal('show'               );
-                $('#nama_jabatan').val  (res.data.nama_jabatan);
+                $('#jabatan-alert').val  (res.data.nama_jabatan);
                 $('#dataId'      ).val  (res.data.id          );
             })
         });
@@ -163,7 +165,7 @@
                         let data = result.responseJSON
                         let errorRes = data.errors;
                         if (errorRes.length >= 1) {
-                            $('#nama-alert').html(errorRes.data.nama_jabatan);
+                            $('#jabatan-alert').html(errorRes.data.nama_jabatan);
                         }
                     } else {
                         let msg = 'Sedang pemeliharaan server'

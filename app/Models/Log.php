@@ -15,6 +15,7 @@ class Log extends Model
         'waktu',
         'koordinat_id',
         'pegawai_id',
+        'status',
         'created_at',
         'updated_at'
     ];
@@ -41,6 +42,7 @@ class Log extends Model
                 'model_a.titik_lintang as lintang',
                 'model_a.titik_bujur as bujur',
                 'model_b.nama',
+                'log.status',
                 'log.created_at',
                 'log.updated_at',
             );

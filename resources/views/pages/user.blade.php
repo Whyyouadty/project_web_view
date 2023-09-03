@@ -84,7 +84,7 @@
                         
                         <div class="col-12 col-md-6">
                             <label class="form-label">Level</label><br>
-                            <select name="level" id="level" class="form-select" required>
+                            <select name="level" id="level" class="form-control" required>
                                 <option value="" selected disabled>--pilih--</option>
                                 <option value="super-admin">super-admin</option>
                                 <option value="admin">admin</option>

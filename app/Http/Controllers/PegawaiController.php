@@ -19,6 +19,8 @@ class PegawaiController extends Controller
             'jabatan' => Jabatan::all(),
             'pegawai' => Pegawai::with('user','departement','jabatan')->get(),
         );
+        // return response()->json($data);
+        
         return view('pages.pegawai', ['data' => $data]);
     }
 

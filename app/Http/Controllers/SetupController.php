@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kehadiran;
+use App\Models\Koordinat;
 use App\Models\Setup;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class SetupController extends Controller
 {
@@ -16,29 +19,30 @@ class SetupController extends Controller
 
     public function store(Request $request)
     {
-       try {
-        $date = Carbon::now();
-        $data = array(
-            'start'      => $request->start,
-            'end'        => $request->end,
-            'tipe'       => $request->tipe,
-            'created_at' => $date,
-        );
-        $data = Setup::create($data);
-        $result = [
-            'message' => 'success',
-            'data' => $data,
-            'code' => 200
-        ];
-       } catch (\Throwable $th) {
-        $result = [
-            'message' => $th->getMessage(),
-            'code' => 500
-        ];
-       }
-        return response()->json($result, $result['code']);
+        try {
+         $date = Carbon::now();
+         $data = array(
+             'start'      => $request->start,
+             'end'        => $request->end,
+             'tipe'       => $request->tipe,
+             'created_at' => $date,
+         );
+         $data = Setup::create($data);
+         $result = [
+             'message' => 'success',
+             'data' => $data,
+             'code' => 200
+         ];
+        } catch (\Throwable $th) {
+         $result = [
+             'message' => $th->getMessage(),
+             'code' => 500
+         ];
+        }
+         return response()->json($result, $result['code']);
+ 
+     }
 
-    }
 
     public function getById($id)
     {

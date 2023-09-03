@@ -32,7 +32,7 @@ Route::get('/jabatan'    , [JabatanController    ::class, 'index' ])->middleware
 Route::get('/koordinat'  , [KoordinatController  ::class, 'index' ])->middleware(['auth', 'role:super-admin|admin'])->name('pages.koordinat'  );
 Route::get('/setup'      , [SetupController      ::class, 'index' ])->middleware(['auth', 'role:super-admin|admin'])->name('pages.setup'      );
 Route::get('/gate'       , [GateController       ::class, 'index' ])->middleware(['auth', 'role:super-admin|admin'])->name('pages.gate'       );
-Route::get('/pegawai'    , [PegawaiController    ::class, 'index' ])->middleware(['auth', 'role:super-admin|admin'])->name('pages.pegawai'       );
+Route::get('/pegawai'    , [PegawaiController    ::class, 'index' ])->middleware(['auth', 'role:super-admin|admin'])->name('pages.pegawai'    );
 Route::get('/log'        , [LogController        ::class, 'index' ])->middleware(['auth', 'role:super-admin|admin'])->name('pages.log'        );
 Route::get('/kehadiran'  , [KehadiranController  ::class, 'index' ])->middleware(['auth', 'role:super-admin|admin'])->name('pages.kehadiran'  );
 

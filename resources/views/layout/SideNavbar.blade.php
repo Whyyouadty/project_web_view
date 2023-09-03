@@ -30,7 +30,8 @@
                 <li class="nav-item {{ Route::is('pages.dashboard') ? 'selected' : '' }}">
                     <a href="{{route('pages.dashboard')}}" 
                             class="nav-link ">
-                        <span class="pcoded-micon"><i class="feather icon-home"></i>
+                        <span class="pcoded-micon">
+                            <i class="feather icon-home"></i>
                         </span>
                         <span class="pcoded-mtext">
                             Dashboard

@@ -23,6 +23,7 @@
                             <th>Waktu</th>
                             <th>Koordinat</th>
                             <th>User</th>
+                            <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -35,8 +36,9 @@
                             <td style="width: 5%">{{ $no++}}</td>
                             <td style="width: 10%">{{ $item->tanggal }}</td>
                             <td style="width: 10%">{{ $item->waktu }}</td>
-                            <td style="width: 10%">{{ $item->koordinat->titik_lintang }}:{{ $item->koordinat->titik_bujur }}</td>
+                            <td style="width: 10%">{{ $item->koordinat->latitude }}:{{ $item->koordinat->longtitude }}</td>
                             <td style="width: 10%">{{ $item->pegawai->nama }}</td>
+                            <td style="width: 10%">{{ $item->status }}</td>
                             <td style="width: 10%">
                                 
                                 <button id="editItem" class="btn btn-sm btn-info" 
@@ -70,35 +72,40 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <input type="hidden" name="id" id="dataId">
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-12">
                             <label class="form-label">Tanggal</label>
                             <input type="date" class="form-control" name="tanggal" id="tanggal" placeholder="Tanggal" required>
-                            <span class="text-danger error-msg small" id="nama-alert"></span>
+                            <span class="text-danger error-msg small" id="tanggal-alert"></span>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-12">
                             <label class="form-label">Waktu</label>
                             <input type="time" class="form-control" name="waktu" id="waktu" placeholder="Waktu" required>
-                            <span class="text-danger error-msg small" id="nama-alert"></span>
+                            <span class="text-danger error-msg small" id="waktu-alert"></span>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-12">
                             <label class="form-label">Koordinat</label><br>
-                            <select name="koordinat_id" id="koordinat_id" class="form-select" required>
+                            <select name="koordinat_id" id="koordinat_id" class="form-control" required>
                                 <option value="" selected disabled>--pilih--</option>
                                 @foreach ($data['koordinat'] as $d)
-                                    <option value="{{$d->id}}">{{$d->titik_lintang}}:{{$d->titik_bujur}}</option>
+                                    <option value="{{$d->id}}">{{$d->latitude}}:{{$d->longtitude}}</option>
                                 @endforeach
                             </select>
-                            <span class="text-danger error-msg small" id="nama-alert"></span>
+                            <span class="text-danger error-msg small" id="koordinat-alert"></span>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-12">
                             <label class="form-label">User</label><br>
-                            <select name="pegawai_id" id="pegawai_id" class="form-select" required>
+                            <select name="pegawai_id" id="pegawai_id" class="form-control" required>
                                 <option value="" selected disabled>--pilih--</option>
                                 @foreach ($data['pegawai'] as $d)
                                     <option value="{{$d->id}}">{{$d->nama}}</option>
                                 @endforeach
                             </select>
-                            <span class="text-danger error-msg small" id="nama-alert"></span>
+                            <span class="text-danger error-msg small" id="pegawai-alert"></span>
+                        </div>
+                        <div class="col-12 col-md-12">
+                            <label class="form-label">Status</label>
+                            <input type="text" class="form-control" name="status" id="status" placeholder="Status">
+                            <span class="text-danger error-msg small" id="status-alert"></span>
                         </div>
                         
                     </div>
@@ -149,6 +156,7 @@
                 $('#waktu'         ).val  (res.data.waktu);
                 $('#koordinat_id'  ).val  (res.data.koordinat_id);
                 $('#pegawai_id'    ).val  (res.data.pegawai_id);
+                $('#status'    ).val  (res.data.status);
                 $('#dataId'        ).val  (res.data.id          );
             })
         });
@@ -170,6 +178,16 @@
                 typePost = "PUT"
                 url = `${baseUrl}/api/w1/log/${dataId}`
                 console.log('put');
+            }
+
+            let tanggal = $('#tanggal').val();
+            let waktu = $('#waktu').val();
+            let koordinat_id = $('#koordinat_id').val();
+            let pegawai_id = $('#pegawai_id').val();
+
+            if (tanggal === '' || waktu === '' || koordinat_id === '' || pegawai_id === '') {
+                iziToast.error('Harap isi semua field.');
+                return;
             }
 
             $.ajax({
@@ -201,7 +219,11 @@
                         let data = result.responseJSON
                         let errorRes = data.errors;
                         if (errorRes.length >= 1) {
-                            $('#nama-alert').html(errorRes.data.tanggal);
+                            $('#tanggal-alert').html(errorRes.data.tanggal);
+                            $('#waktu-alert').html(errorRes.data.tanggal);
+                            $('#koordinat-alert').html(errorRes.data.tanggal);
+                            $('#pegawai-alert').html(errorRes.data.tanggal);
+                            $('#status-alert').html(errorRes.data.tanggal);
                         }
                     } else {
                         let msg = 'Sedang pemeliharaan server'

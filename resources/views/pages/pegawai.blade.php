@@ -82,9 +82,9 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <input type="hidden" name="id" id="dataId">
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-12">
                             <label class="form-label">User</label><br>
-                            <select name="user_id" id="user_id" class="form-select" required>
+                            <select name="user_id" id="user_id" class="form-control" required>
                                 <option value="" selected disabled>--pilih--</option>
                                 @foreach ($data['user'] as $d)
                                     <option value="{{$d->id}}">{{$d->username}}</option>
@@ -92,19 +92,19 @@
                             </select>
                             <span class="text-danger error-msg small" id="nama-alert"></span>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-12">
                             <label class="form-label">Nama</label>
                             <input type="text" class="form-control" name="nama" id="nama" placeholder="Nama" required>
                             <span class="text-danger error-msg small" id="nama-alert"></span>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-12">
                             <label class="form-label">NIDN</label>
                             <input type="text" class="form-control" name="nidn" id="nidn" placeholder="Nidn" required>
                             <span class="text-danger error-msg small" id="nama-alert"></span>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-12">
                             <label class="form-label">Departement</label><br>
-                            <select name="departement_id" id="departement_id" class="form-select" required>
+                            <select name="departement_id" id="departement_id" class="form-control" required>
                                 <option value="" selected disabled>--pilih--</option>
                                 @foreach ($data['departement'] as $d)
                                     <option value="{{$d->id}}">{{$d->nama_departement}}</option>
@@ -112,9 +112,9 @@
                             </select>
                             <span class="text-danger error-msg small" id="nama-alert"></span>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-12">
                             <label class="form-label">Jabatan</label><br>
-                            <select name="jabatan_id" id="jabatan_id" class="form-select" required>
+                            <select name="jabatan_id" id="jabatan_id" class="form-control" required>
                                 <option value="" selected disabled>--pilih--</option>
                                 @foreach ($data['jabatan'] as $d)
                                     <option value="{{$d->id}}">{{$d->nama_jabatan}}</option>
@@ -122,19 +122,19 @@
                             </select>
                             <span class="text-danger error-msg small" id="nama-alert"></span>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-12">
                             <label class="form-label">TTL</label>
                             <input type="text" class="form-control" name="ttl" id="ttl" placeholder="Tempat tanggal lahir" required>
                             <span class="text-danger error-msg small" id="nama-alert"></span>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-12">
                             <label class="form-label">Alamat</label>
                             <input type="text" class="form-control" name="alamat" id="alamat" placeholder="Alamat" required>
                             <span class="text-danger error-msg small" id="nama-alert"></span>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-12">
                             <label class="form-label">Agama</label><br>
-                            <select name="agama" id="agama" class="form-select" required>
+                            <select name="agama" id="agama" class="form-control" required>
                                 <option value="" selected disabled>--pilih--</option>
                                 <option value="Islam">Islam</option>
                                 <option value="Kristen">Kristen</option>
@@ -144,16 +144,16 @@
                             </select>
                             <span class="text-danger error-msg small" id="nama-alert"></span>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-12">
                             <label class="form-label">JK</label><br>
-                            <select name="jk" id="jk" class="form-select" required>
+                            <select name="jk" id="jk" class="form-control" required>
                                 <option value="" selected disabled>--pilih--</option>
                                 <option value="Laki-laki">Laki-laki</option>
                                 <option value="Perempuan">Perempuan</option>
                             </select>
                             <span class="text-danger error-msg small" id="nama-alert"></span>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-12">
                             <label class="form-label">No Hp</label>
                             <input type="text" class="form-control" name="no_hp" id="no_hp" placeholder="No Hp" required>
                             <span class="text-danger error-msg small" id="nama-alert"></span>

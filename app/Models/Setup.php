@@ -14,7 +14,5 @@ class Setup extends Model
         'start',
         'end',
         'tipe',
-        'created_at',
-        'updated_at'
     ];
 }

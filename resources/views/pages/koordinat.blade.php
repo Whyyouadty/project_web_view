@@ -19,8 +19,8 @@
                     <thead>
                         <tr>
                             <th>NO</th>
-                            <th>Titik Lintang</th>
-                            <th>Titik Bujur</th>
+                            <th>Latitude</th>
+                            <th>Longtitude</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -31,8 +31,8 @@
                         @foreach ($data as $item)
                         <tr>
                             <td style="width: 20%">{{$no++}}</td>
-                            <td style="width: 30%">{{ $item->titik_lintang }}</td>
-                            <td style="width: 30%">{{ $item->titik_bujur }}</td>
+                            <td style="width: 30%">{{ $item->latitude }}</td>
+                            <td style="width: 30%">{{ $item->longtitude }}</td>
                             <td style="width: 20%">
                                 
                                 <button id="editItem" class="btn btn-sm btn-info" 
@@ -66,10 +66,16 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <input type="hidden" name="id" id="dataId">
-                        <label>Titik Lintang</label>
-                        <input id="titik_lintang" class="form-control" name="titik_lintang" type="text" placeholder="Lintang" required>
-                        <label>Titik Bujur</label>
-                        <input id="titik_bujur" class="form-control" name="titik_bujur" type="text" placeholder="Bujur" required>
+                        <div class="col-12 col-md-12">
+                            <label class="form-label">Latitude</label>
+                            <input type="text" class="form-control" name="latitude" id="latitude" placeholder="Latitude">
+                            <span class="text-danger error-msg small" id="latitude-alert"></span>
+                        </div>
+                        <div class="col-12 col-md-12">
+                            <label class="form-label">Longtitude</label>
+                            <input type="text" class="form-control" name="longtitude" id="longtitude" placeholder="Longtitude">
+                            <span class="text-danger error-msg small" id="longtitude-alert"></span>
+                        </div>
                     </div>
                     <span class="text-danger small" id="nama-alert"></span>
                 </div>
@@ -114,8 +120,8 @@
                 $('#btn-simpan'   ).val  ("edit-user"          );
                 $('#nama-alert'   ).html ('                   ');
                 $('#modal-data'   ).modal('show'               );
-                $('#titik_lintang').val  (res.data.titik_lintang);
-                $('#titik_bujur'  ).val  (res.data.titik_bujur);
+                $('#latitude').val  (res.data.latitude);
+                $('#longtitude'  ).val  (res.data.longtitude);
                 $('#dataId'       ).val  (res.data.id          );
             })
         });

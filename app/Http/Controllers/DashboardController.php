@@ -24,12 +24,14 @@ class DashboardController extends Controller
 
         $kehadiran = $kehadiranQuery->get();
         $totalPegawai = Pegawai::count();
-        $totalHadir = $kehadiran->where('status', 'Masuk')->count();
-        $totalTidakHadir = $kehadiran->where('status', 'Tidak Masuk')->count();
+        $totalMasuk = $kehadiran->where('status', 'Masuk Tepat Waktu')->count();
+        $totalterlambat = $kehadiran->where('status', 'Terlambat')->count();
+        $totalTidakMasuk = $kehadiran->where('status', 'Tidak Masuk')->count();
 
         $data['total_pegawai'] = $totalPegawai;
-        $data['total_hadir'] = $totalHadir;
-        $data['total_tidak_hadir'] = $totalTidakHadir;
+        $data['total_masuk'] = $totalMasuk;
+        $data['total_terlambat'] = $totalterlambat;
+        $data['total_tidak_masuk'] = $totalTidakMasuk;
 
         $attendances = Kehadiran::joinList()->when($year && $month, function ($query) use ($year, $month) {
             return $query->whereYear('kehadiran.tanggal', $year)->whereMonth('kehadiran.tanggal', $month);

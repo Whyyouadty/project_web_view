@@ -19,8 +19,8 @@ class KoordinatController extends Controller
        try {
         $date = Carbon::now();
         $data = array(
-            'titik_lintang' => $request->titik_lintang,
-            'titik_bujur'   => $request->titik_bujur  ,
+            'latitude' => $request->latitude,
+            'longtitude'   => $request->longtitude  ,
             'created_at'    => $date,
         );
         $data = Koordinat::create($data);
@@ -70,8 +70,8 @@ class KoordinatController extends Controller
 		try {
         $date = Carbon::now();
         $data = [
-            'titik_lintang' => $request->titik_lintang,
-            'titik_bujur'   => $request->titik_bujur,
+            'latitude' => $request->latitude,
+            'longtitude'   => $request->longtitude,
             'updated_at'    => $date,
         ];
         $data = Koordinat::where(['id' => $id])->update($data);

@@ -68,12 +68,21 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <input type="hidden" name="id" id="dataId">
-                        <label>No Sesi</label>
-                        <input id="no_sesi" class="form-control" name="no_sesi" type="number" placeholder="Sesi" required>
-                        <label>Start</label>
-                        <input id="start" class="form-control" name="start" type="time" placeholder="Start" required>
-                        <label>End</label>
-                        <input id="end" class="form-control" name="end" type="time" placeholder="End" required>
+                        <div class="col-12 col-md-12">
+                            <label class="form-label">Sesi</label>
+                            <input type="number" class="form-control" name="no_sesi" id="no_sesi" placeholder="Sesi" required>
+                            <span class="text-danger error-msg small" id="no_sesi-alert"></span>
+                        </div>
+                        <div class="col-12 col-md-12">
+                            <label class="form-label">Start</label>
+                            <input type="time" class="form-control" name="start" id="start" placeholder="Start" required>
+                            <span class="text-danger error-msg small" id="start-alert"></span>
+                        </div>
+                        <div class="col-12 col-md-12">
+                            <label class="form-label">End</label>
+                            <input type="time" class="form-control" name="end" id="end" placeholder="End" required>
+                            <span class="text-danger error-msg small" id="end-alert"></span>
+                        </div>
                     </div>
                     <span class="text-danger small" id="nama-alert"></span>
                 </div>
@@ -173,7 +182,9 @@
                         let data = result.responseJSON
                         let errorRes = data.errors;
                         if (errorRes.length >= 1) {
-                            $('#nama-alert').html(errorRes.data.no_sesi);
+                            $('#sesi-alert').html(errorRes.data.no_sesi);
+                            $('#start-alert').html(errorRes.data.start);
+                            $('#end-alert').html(errorRes.data.end);
                         }
                     } else {
                         let msg = 'Sedang pemeliharaan server'

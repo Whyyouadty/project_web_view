@@ -1,13 +1,13 @@
 @extends('layout.Base')
 @section('content')
 
-<div class="col-sm-4">
+<div class="col-sm-3">
     <div class="card">
         <div class="card-body">
             <div class="row align-items-center">
                 <div class="col-8">
                     <h4 class="text-c-blue">{{ $data['total_pegawai'] }} Pegawai</h4>
-                    <h6 class="text-muted m-b-0">Total pegawai Keseluruhan</h6>
+                    <h6 class="text-muted m-b-0">Total Keseluruhan</h6>
                 </div>
                 <div class="col-4 text-right">
                     <i class="feather icon-user f-28"></i>
@@ -29,13 +29,13 @@
     </div>
 </div>
 
-<div class="col-sm-4">
+<div class="col-sm-3">
     <div class="card">
         <div class="card-body">
             <div class="row align-items-center">
                 <div class="col-8">
-                    <h4 class="text-c-green">{{ $data['total_hadir'] }} Pegawai</h4>
-                    <h6 class="text-muted m-b-0">Total pegawai Hadir</h6>
+                    <h4 class="text-c-green">{{ $data['total_masuk'] }} Pegawai</h4>
+                    <h6 class="text-muted m-b-0">Total Kehadiran<br></h6>
                 </div>
                 <div class="col-4 text-right">
                     <i class="feather icon-user-check f-28"></i>
@@ -57,13 +57,41 @@
     </div>
 </div>
 
-<div class="col-sm-4">
+<div class="col-sm-3">
     <div class="card">
         <div class="card-body">
             <div class="row align-items-center">
                 <div class="col-8">
-                    <h4 class="text-c-red">{{ $data['total_tidak_hadir'] }} Pegawai</h4>
-                    <h6 class="text-muted m-b-0">Total pegawai Tidak Hadir</h6>
+                    <h4 class="text-c-yellow">{{ $data['total_terlambat'] }} Pegawai</h4>
+                    <h6 class="text-muted m-b-0">Total Terambat<br></h6>
+                </div>
+                <div class="col-4 text-right">
+                    <i class="feather icon-user-minus f-28"></i>
+                </div>
+            </div>
+        </div>
+        <a href="{{route('pages.kehadiran')}}">
+            <div class="card-footer bg-c-yellow">
+                <div class="row align-items-center">
+                    <div class="col-9">
+                        <p class="text-white m-b-0">Change</p>
+                    </div>
+                    <div class="col-3 text-right">
+                        <i class="feather icon-corner-down-left text-white f-16"></i>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+
+<div class="col-sm-3">
+    <div class="card">
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-8">
+                    <h4 class="text-c-red">{{ $data['total_tidak_masuk'] }} Pegawai</h4>
+                    <h6 class="text-muted m-b-0">Total Tidak Hadir<br></h6>
                 </div>
                 <div class="col-4 text-right">
                     <i class="feather icon-user-x f-28"></i>
@@ -118,9 +146,14 @@
                         </div>
                     </form>
                     <!-- End Form Filter -->
-
+                    <button type="button"
+                            id="export-btn"
+                            class="btn btn-secondary border-dark"
+                            style="float: right">
+                            Export to Excel
+                    </button>
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped">
+                        <table id="table-rekap" class="table table-striped">
                             <thead>
                                 <tr>
                                     <th>ID</th>
@@ -157,4 +190,36 @@
 </div>
 
 
+@section('script')
+    <script>
+        document.getElementById("export-btn").addEventListener("click", function () {
+            // Ambil data dari tabel
+            var table = document.getElementById("table-rekap");
+            var data = [];
+
+            // Ambil data dari setiap sel dalam tabel dan simpan dalam array data
+            for (var i = 0; i < table.rows.length; i++) {
+                var row = table.rows[i];
+                var rowData = [];
+                for (var j = 0; j < row.cells.length; j++) {
+                    rowData.push(row.cells[j].innerText);
+                }
+                data.push(rowData);
+            }
+
+            // Buat worksheet baru
+            var worksheet = XLSX.utils.aoa_to_sheet(data);
+
+            // Buat workbook dan tambahkan worksheet
+            var workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Attendance Data");
+
+            // Simpan workbook sebagai file Excel
+            var dateNow = new Date();
+            var fileName = "attendance_data_" + dateNow.toISOString() + ".xlsx";
+            XLSX.writeFile(workbook, fileName);
+        });
+    </script>
+
+@endsection
 @endsection

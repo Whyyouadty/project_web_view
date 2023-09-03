@@ -33,7 +33,8 @@
                             <td style="width: 50%">{{ $item->nama_departement }}</td>
                             <td style="width: 10%">
                                 
-                                <button id="editItem" class="btn btn-sm btn-info" 
+                                <button id="editItem" 
+                                        class="btn btn-sm btn-info" 
                                         data-id="{{$item->id}}">
                                         Edit
                                 </button>
@@ -64,10 +65,12 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <input type="hidden" name="id" id="dataId">
-                        <label>Nama Departement</label>
-                        <input id="nama_departement" class="form-control" name="nama_departement" type="text" placeholder="Departement" required>
+                        <div class="col-12 col-md-12">
+                            <label class="form-label">Departement</label>
+                            <input type="text" class="form-control" name="nama_departement" id="nama_departement" placeholder="Departement" required>
+                            <span class="text-danger error-msg small" id="departement-alert"></span>
+                        </div>
                     </div>
-                    <span class="text-danger small" id="nama-alert"></span>
                 </div>
                 <div class="modal-footer">
                     <button type="reset" class="btn  btn-secondary" data-dismiss="modal" >Close</button>
@@ -163,7 +166,7 @@
                         let data = result.responseJSON
                         let errorRes = data.errors;
                         if (errorRes.length >= 1) {
-                            $('#nama-alert').html(errorRes.data.nama_departement);
+                            $('#departement-alert').html(errorRes.data.nama_departement);
                         }
                     } else {
                         let msg = 'Sedang pemeliharaan server'

@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Ablepro v8.0 bootstrap admin template by Phoenixcoded</title>
+    <title>Sistem-Absensi-Online</title>
     <!-- HTML5 Shim and Respond.js IE11 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 11]>
@@ -121,6 +121,7 @@
     <script src="{{asset('template/dist/assets/js/plugins/bootstrap.min.js')}}"></script>
     <script src="{{asset('template/dist/assets/js/ripple.js')}}"></script>
     <script src="{{asset('template/dist/assets/js/pcoded.min.js')}}"></script>
+    <script src="{{asset('template/dist/assets/js/plugins/perfect-scrollbar.min.js')}}"></script>
 
 <!-- Apex Chart -->
 {{-- <script src="{{asset('template/dist/assets/js/plugins/apexcharts.min.js')}}"></script> --}}
@@ -128,6 +129,8 @@
 
 <!-- custom-chart js -->
 {{-- <script src="{{asset('template/dist/assets/js/pages/dashboard-main.js')}}"></script> --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap4.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.18/dist/sweetalert2.all.min.js" integrity="sha256-eYINpiFTsm812/hOBxFCGaSZzPvHBZZFYSe5ZWLgYzo=" crossorigin="anonymous"></script>

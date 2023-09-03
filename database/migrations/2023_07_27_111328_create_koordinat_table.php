@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('koordinat', function (Blueprint $table) {
             $table->id();
-            $table->string('titik_lintang');
-            $table->string('titik_bujur');
+            $table->double('latitude');
+            $table->double('longtitude');
             $table->timestamps();
         });
     }

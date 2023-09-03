@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('setup', function (Blueprint $table) {
-            $table->id();
-            $table->time('start');
-            $table->time('end');
-            $table->string('tipe');
-            $table->timestamps();
+        Schema::table('koordinat', function (Blueprint $table) {
+            $table->string('last_status')->default('masuk'); // Ubah tipe data jika perlu sesuai kebutuhan
         });
     }
 
@@ -25,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('setup');
+        Schema::table('koordinat', function (Blueprint $table) {
+            $table->dropColumn('last_status');
+        });
     }
 };

@@ -22,7 +22,7 @@ class User extends Authenticatable
         'updated_at'
     ];
 
-    protected $hidden = [
-        'password'
-    ];
+    // protected $hidden = [
+    //     'password'
+    // ];
 }
