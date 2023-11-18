@@ -61,7 +61,7 @@
                                 @csrf
                                 <div class="form-group mb-3">
                                     <label class="floating-label" for="username">Username</label>
-                                    <input type="text" class="form-control" name="username" id="username" placeholder="">
+                                    <input type="text" class="form-control" name="email" id="username" placeholder="">
                                 </div>
                                 <div class="form-group mb-4">
                                     <label class="floating-label" for="password">Password</label>

@@ -7,6 +7,8 @@ use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\KehadiranController;
 use App\Http\Controllers\KoordinatController;
 use App\Http\Controllers\LogController;
+use App\Http\Controllers\Mobile\AbsensiController;
+use App\Http\Controllers\Mobile\PegawaiProfileController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\SetupController;
 use App\Http\Controllers\UserController;
@@ -94,4 +96,15 @@ Route::prefix('w1/kehadiran')->controller(KehadiranController::class)->group(fun
 	Route::post   ('/'     , 'store'  );
 	Route::put   ('/{id}' , 'update' );
 	Route::delete ('/{id}' , 'delete' );
+});
+
+Route::prefix('mob/profile')->controller(PegawaiProfileController::class)->middleware('auth:api')->group(function () {
+	Route::get('/', 'getCurrentUserData');
+	Route::get('/kehadiran', 'getCurrnetUserKehadiran');
+});
+
+Route::prefix('mob/absensi')->controller(AbsensiController::class)->middleware('auth:api')->group(function () {
+	Route::get('/gate', 'getCurrentGate');
+	Route::post('/save', 'presentPegawai');
+	Route::get('/history', 'getCurrentPresentHistory');
 });

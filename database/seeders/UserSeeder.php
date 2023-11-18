@@ -41,7 +41,7 @@ class UserSeeder extends Seeder
 
         $user = User::create([
             'id'         => crc32($uuid)        ,
-            'username'   => 'wahyu'   ,
+            'email'   => 'wahyu'   ,
             'password'   => Hash::make('123456'),
             'level'      => 'super-admin'       ,
             'created_at' => Carbon::now()       ,
@@ -52,7 +52,7 @@ class UserSeeder extends Seeder
 
         $user2 = User::create([
             'id'         => crc32($uuid2)        ,
-            'username'   => 'admin'          ,
+            'email'   => 'admin'          ,
             'password'   => Hash::make('123456'),
             'level'      => 'admin'             ,
             'created_at' => Carbon::now()       ,
