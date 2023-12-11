@@ -60,8 +60,8 @@
                             <form id="formAuthentication" class="mb-3" action="{{ route('login-process') }}" method="POST">
                                 @csrf
                                 <div class="form-group mb-3">
-                                    <label class="floating-label" for="username">Username</label>
-                                    <input type="text" class="form-control" name="email" id="username" placeholder="">
+                                    <label class="floating-label" for="username">Email</label>
+                                    <input type="text" class="form-control" name="email" id="email" placeholder="">
                                 </div>
                                 <div class="form-group mb-4">
                                     <label class="floating-label" for="password">Password</label>

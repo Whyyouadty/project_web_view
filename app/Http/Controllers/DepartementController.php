@@ -14,6 +14,18 @@ class DepartementController extends Controller
         return view('pages.departement', ['data' => $data]);
     }
 
+    public function all() 
+    {
+        $data =  Departement::all();
+        return response()->json(
+            [
+                'message' => 'success',
+                'data' => $data,
+                'code' => 200
+            ],200
+        );
+    }
+
     public function store(Request $request)
     {
        try {

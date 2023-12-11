@@ -21,6 +21,18 @@ class LogController extends Controller
         return view('pages.log', ['data' => $data]);
     }
 
+    public function all() 
+    {
+        $data =  Log::all();
+        return response()->json(
+            [
+                'message' => 'success',
+                'data' => $data,
+                'code' => 200
+            ],200
+        );
+    }
+
     public function store(Request $request)
     {
         try {

@@ -39,7 +39,7 @@
                         @foreach ($data['pegawai'] as $item)
                         <tr>
                             <td style="width: 10%">{{$no++}}</td>
-                            <td style="width: 10%">{{ $item->user->username }}</td>
+                            <td style="width: 10%">{{ $item->user->email }}</td>
                             <td style="width: 10%">{{ $item->nama }}</td>
                             <td style="width: 10%">{{ $item->nidn }}</td>
                             <td style="width: 10%">{{ $item->departement->nama_departement }}</td>
@@ -87,7 +87,7 @@
                             <select name="user_id" id="user_id" class="form-control" required>
                                 <option value="" selected disabled>--pilih--</option>
                                 @foreach ($data['user'] as $d)
-                                    <option value="{{$d->id}}">{{$d->username}}</option>
+                                    <option value="{{$d->id}}">{{$d->email}}</option>
                                 @endforeach
                             </select>
                             <span class="text-danger error-msg small" id="nama-alert"></span>

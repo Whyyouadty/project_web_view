@@ -24,6 +24,18 @@ class PegawaiController extends Controller
         return view('pages.pegawai', ['data' => $data]);
     }
 
+    public function all() 
+    {
+        $data =  Pegawai::all();
+        return response()->json(
+            [
+                'message' => 'success',
+                'data' => $data,
+                'code' => 200
+            ],200
+        );
+    }
+
     public function store(Request $request)
     {
        try {

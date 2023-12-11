@@ -19,13 +19,12 @@
                     <thead>
                         <tr>
                             <th>NO</th>
-                            <th>User</th>
+                            <th>Pegawai</th>
                             <th>Koordinat</th>
                             <th>Tanggal</th>
                             <th>Jam masuk</th>
                             <th>Jam keluar</th>
                             <th>Status</th>
-                            <th>Keterangan</th>
                             <th>Gate</th>
                             <th>Action</th>
                         </tr>
@@ -43,7 +42,6 @@
                             <td style="width: 10%">{{ $item->jam_masuk }}</td>
                             <td style="width: 10%">{{ $item->jam_keluar }}</td>
                             <td style="width: 10%">{{ $item->status }}</td>
-                            <td style="width: 10%">{{ $item->keterangan }}</td>
                             <td style="width: 10%">{{ $item->gate->no_sesi }}</td>
                             <td style="width: 10%">
                                 
@@ -80,7 +78,7 @@
                     <div class="form-group">
                         <input type="hidden" name="id" id="dataId">
                         <div class="col-12 col-md-12">
-                            <label class="form-label">User</label><br>
+                            <label class="form-label">Pegawai</label><br>
                             <select name="pegawai_id" id="pegawai_id" class="form-control" required>
                                 <option value="" selected disabled>--pilih--</option>
                                 @foreach ($data['pegawai'] as $d)
@@ -118,11 +116,6 @@
                             <label class="form-label">Status</label><br>
                             <input type="text" class="form-control" name="status" id="status" placeholder="Status" readonly>
                             <span class="text-danger error-msg small" id="status-alert"></span>
-                        </div>
-                        <div class="col-12 col-md-12">
-                            <label class="form-label">Keterangan</label>
-                            <input type="text" class="form-control" name="keterangan" id="keterangan" placeholder="Keterangan">
-                            <span class="text-danger error-msg small" id="keterangan-alert"></span>
                         </div>
                         <div class="col-12 col-md-12">
                             <label class="form-label">Gate</label><br>
@@ -216,7 +209,6 @@
             $('#jam_masuk').val(res.data.jam_masuk);
             $('#jam_keluar').val(res.data.jam_keluar);
             $('#status').val(res.data.status);
-            $('#keterangan').val(res.data.keterangan);
             $('#gate_id').val(res.data.gate_id);
             $('#dataId').val(res.data.id);
         });
@@ -271,7 +263,6 @@
                         $('#jam_masuk-alert').html(errorRes.data.jam_masuk);
                         $('#jam_keluar-alert').html(errorRes.data.jam_keluar);
                         $('#status-alert').html(errorRes.data.status);
-                        $('#keterangan-alert').html(errorRes.data.keterangan);
                         $('#gate-alert').html(errorRes.data.gate_id);
                     }
                 } else {

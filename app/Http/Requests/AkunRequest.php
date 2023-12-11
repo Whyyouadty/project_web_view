@@ -24,7 +24,7 @@ class AkunRequest extends FormRequest
     public function rules()
     {
         return [
-            'username' => 'required | min:5 | max:150',
+            'email' => 'required | min:5 | max:150',
             'password' => 'required | min:5 | max:8',
             'level' => 'required | min:4 | max:11',
         ];

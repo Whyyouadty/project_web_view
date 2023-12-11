@@ -16,6 +16,18 @@ class UserController extends Controller
         return view('pages.user', ['data' => $data]);
     }
 
+    public function all() 
+    {
+        $data =  User::all();
+        return response()->json(
+            [
+                'message' => 'success',
+                'data' => $data,
+                'code' => 200
+            ],200
+        );
+    }
+
     public function store(Request $request)
     {
        try {
@@ -23,7 +35,7 @@ class UserController extends Controller
 
         $hashedPassword = Hash::make($request->password);
         $data = array(
-            'username'      => $request->username,
+            'email'      => $request->email,
             'password'        => $hashedPassword,
             'level'       => $request->level,
             'created_at' => $date,
@@ -77,7 +89,7 @@ class UserController extends Controller
 
         $hashedPassword = Hash::make($request->password);
         $data = [
-            'username'=>$request->username,
+            'email'=>$request->email,
             'password'=>$hashedPassword,
             'level'=>$request->level,
             'updated_at'=>$date,

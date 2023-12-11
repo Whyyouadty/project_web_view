@@ -19,7 +19,7 @@
                     <thead>
                         <tr>
                             <th>NO</th>
-                            <th>Username</th>
+                            <th>Email</th>
                             <th>Password</th>
                             <th>Level</th>
                             <th>Action</th>
@@ -32,7 +32,7 @@
                         @foreach ($data as $item)
                         <tr>
                             <td style="width: 10%">{{$no++}}</td>
-                            <td style="width: 10%">{{ $item->username }}</td>
+                            <td style="width: 10%">{{ $item->email }}</td>
                             <td style="width: 10%">{{ $item->password }}</td>
                             <td style="width: 10%">{{ $item->level }}</td>
                             <td style="width: 10%">
@@ -71,8 +71,8 @@
                         <input type="hidden" name="id" id="dataId">
                         
                         <div class="col-12 col-md-6">
-                            <label class="form-label">Username</label>
-                            <input type="text" class="form-control" name="username" id="username" placeholder="Username" required>
+                            <label class="form-label">Email</label>
+                            <input type="text" class="form-control" name="email" id="email" placeholder="Email" required>
                             <span class="text-danger error-msg small" id="nama-alert"></span>
                         </div>
 

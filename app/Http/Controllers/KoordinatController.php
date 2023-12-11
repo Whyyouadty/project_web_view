@@ -14,6 +14,18 @@ class KoordinatController extends Controller
         return view('pages.koordinat', ['data' => $data]);
     }
 
+    public function all() 
+    {
+        $data =  Koordinat::all();
+        return response()->json(
+            [
+                'message' => 'success',
+                'data' => $data,
+                'code' => 200
+            ],200
+        );
+    }
+
     public function store(Request $request)
     {
        try {

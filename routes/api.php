@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::prefix('w1/user')->controller(UserController::class)->group(function () {
-	Route::get    ('/'     , 'index'  );
+	Route::get    ('/'     , 'all'  );
 	Route::get    ('/{id}' , 'getById');
 	Route::post   ('/'     , 'store'  );
 	Route::put   ('/{id}' , 'update' );
@@ -35,7 +35,7 @@ Route::prefix('w1/user')->controller(UserController::class)->group(function () {
 });
 
 Route::prefix('w1/departement')->controller(DepartementController::class)->group(function () {
-	Route::get    ('/'     , 'index'  );
+	Route::get    ('/'     , 'all'  );
 	Route::get    ('/{id}' , 'getById');
 	Route::post   ('/'     , 'store'  );
 	Route::put   ('/{id}' , 'update' );
@@ -43,7 +43,7 @@ Route::prefix('w1/departement')->controller(DepartementController::class)->group
 });
 
 Route::prefix('w1/jabatan')->controller(JabatanController::class)->group(function () {
-	Route::get    ('/'     , 'index'  );
+	Route::get    ('/'     , 'all'  );
 	Route::get    ('/{id}' , 'getById');
 	Route::post   ('/'     , 'store'  );
 	Route::put    ('/{id}' , 'update' );
@@ -51,7 +51,7 @@ Route::prefix('w1/jabatan')->controller(JabatanController::class)->group(functio
 });
 
 Route::prefix('w1/koordinat')->controller(KoordinatController::class)->group(function () {
-	Route::get    ('/'     , 'index'  );
+	Route::get    ('/'     , 'all'  );
 	Route::get    ('/{id}' , 'getById');
 	Route::post   ('/'     , 'store'  );
 	Route::put   ('/{id}' , 'update' );
@@ -59,7 +59,7 @@ Route::prefix('w1/koordinat')->controller(KoordinatController::class)->group(fun
 });
 
 Route::prefix('w1/setup')->controller(SetupController::class)->group(function () {
-	Route::get    ('/'     , 'index'  );
+	Route::get    ('/'     , 'all'  );
 	Route::get    ('/{id}' , 'getById');
 	Route::post   ('/'     , 'store'  );
 	Route::put   ('/{id}' , 'update' );
@@ -67,7 +67,7 @@ Route::prefix('w1/setup')->controller(SetupController::class)->group(function ()
 });
 
 Route::prefix('w1/gate')->controller(GateController::class)->group(function () {
-	Route::get    ('/'     , 'index'  );
+	Route::get    ('/'     , 'all'  );
 	Route::get    ('/{id}' , 'getById');
 	Route::post   ('/'     , 'store'  );
 	Route::put   ('/{id}' , 'update' );
@@ -75,7 +75,7 @@ Route::prefix('w1/gate')->controller(GateController::class)->group(function () {
 });
 
 Route::prefix('w1/pegawai')->controller(PegawaiController::class)->group(function () {
-	Route::get    ('/'     , 'index'  );
+	Route::get    ('/'     , 'all'  );
 	Route::get    ('/{id}' , 'getById');
 	Route::post   ('/'     , 'store'  );
 	Route::put   ('/{id}' , 'update' );
@@ -83,7 +83,7 @@ Route::prefix('w1/pegawai')->controller(PegawaiController::class)->group(functio
 });
 
 Route::prefix('w1/log')->controller(LogController::class)->group(function () {
-	Route::get    ('/'     , 'index'  );
+	Route::get    ('/'     , 'all'  );
 	Route::get    ('/{id}' , 'getById');
 	Route::post   ('/'     , 'store'  );
 	Route::put   ('/{id}' , 'update' );
@@ -91,7 +91,7 @@ Route::prefix('w1/log')->controller(LogController::class)->group(function () {
 });
 
 Route::prefix('w1/kehadiran')->controller(KehadiranController::class)->group(function () {
-	Route::get    ('/'     , 'index'  );
+	Route::get    ('/'     , 'all'  );
 	Route::get    ('/{id}' , 'getById');
 	Route::post   ('/'     , 'store'  );
 	Route::put   ('/{id}' , 'update' );

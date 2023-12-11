@@ -14,6 +14,18 @@ class JabatanController extends Controller
         return view('pages.jabatan', ['data' => $data]);
     }
 
+    public function all() 
+    {
+        $data =  Jabatan::all();
+        return response()->json(
+            [
+                'message' => 'success',
+                'data' => $data,
+                'code' => 200
+            ],200
+        );
+    }
+
     public function store(Request $request)
     {
        try {

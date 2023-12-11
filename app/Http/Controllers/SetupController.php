@@ -17,6 +17,18 @@ class SetupController extends Controller
         return view('pages.setup', ['data' => $data]);
     }
 
+    public function all() 
+    {
+        $data =  Setup::all();
+        return response()->json(
+            [
+                'message' => 'success',
+                'data' => $data,
+                'code' => 200
+            ],200
+        );
+    }
+
     public function store(Request $request)
     {
         try {

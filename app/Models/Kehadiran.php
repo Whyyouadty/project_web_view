@@ -17,7 +17,6 @@ class Kehadiran extends Model
         'jam_masuk',
         'jam_keluar',
         'status',
-        'keterangan',
         'gate_id',
         'created_at',
         'updated_at'
@@ -53,7 +52,6 @@ class Kehadiran extends Model
                 'kehadiran.jam_masuk',
                 'kehadiran.jam_keluar',
                 'kehadiran.status',
-                'kehadiran.keterangan',
                 'model_c.no_sesi as sesi',
                 'kehadiran.created_at',
                 'kehadiran.updated_at',

@@ -7,7 +7,7 @@
                     <img class="img-radius" src="{{asset('template/dist/assets/images/user/avatar-2.jpg')}}" alt="User-Profile-Image">
                     <div class="user-details">
                         <div id="more-details">{{-- @auth --}}
-                            {{ Auth::user()->username }}
+                            {{-- {{ Auth::user()->username }} --}}
                         {{-- @endauth.  --}}<i class="fa fa-caret-down"></i></div>
                     </div>
                 </div>
@@ -128,19 +128,6 @@
                     </a>
                 </li>
                 
-                <li class="nav-item {{ Route::is('pages.log') ? 'selected' : '' }}">
-                    <a href="{{route('pages.log')}}" 
-                            class="nav-link ">
-                        <span class="pcoded-micon">
-                            <i class="feather icon-package">
-                            </i>
-                        </span>
-                        <span class="pcoded-mtext">
-                            Log
-                        </span>
-                    </a>
-                </li>
-                
                 <li class="nav-item {{ Route::is('pages.kehadiran') ? 'selected' : '' }}">
                     <a href="{{route('pages.kehadiran')}}" 
                             class="nav-link ">
@@ -153,6 +140,19 @@
                         </span>
                     </a>
                 </li>   
+                
+                <li class="nav-item {{ Route::is('pages.log') ? 'selected' : '' }}">
+                    <a href="{{route('pages.log')}}" 
+                            class="nav-link ">
+                        <span class="pcoded-micon">
+                            <i class="feather icon-package">
+                            </i>
+                        </span>
+                        <span class="pcoded-mtext">
+                            Log
+                        </span>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

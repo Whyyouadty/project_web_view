@@ -14,6 +14,18 @@ class GateController extends Controller
         return view('pages.Gate', ['data' => $data]);
     }
 
+    public function all() 
+    {
+        $data =  Gate::all();
+        return response()->json(
+            [
+                'message' => 'success',
+                'data' => $data,
+                'code' => 200
+            ],200
+        );
+    }
+
     public function store(Request $request)
     {
        try {

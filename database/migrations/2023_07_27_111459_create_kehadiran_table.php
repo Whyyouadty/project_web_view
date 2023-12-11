@@ -19,7 +19,6 @@ return new class extends Migration
             $table->time('jam_masuk');
             $table->time('jam_keluar');
             $table->string('status');
-            $table->string('keterangan');
             $table->foreignId('gate_id')->references('id')->on('gate');
             $table->timestamps();
         });

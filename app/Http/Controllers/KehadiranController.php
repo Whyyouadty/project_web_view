@@ -25,6 +25,18 @@ class KehadiranController extends Controller
         return view('pages.kehadiran', compact('data', 'setupData'));
     }
 
+    public function all() 
+    {
+        $data =  Kehadiran::all();
+        return response()->json(
+            [
+                'message' => 'success',
+                'data' => $data,
+                'code' => 200
+            ],200
+        );
+    }
+
     
     public function store(Request $request)
     {
@@ -58,8 +70,7 @@ class KehadiranController extends Controller
                 'tanggal'      => $request->tanggal,
                 'jam_masuk'    => $request->jam_masuk, 
                 'jam_keluar'   => $request->jam_keluar,
-                'status'       => $status, 
-                'keterangan'   => $request->keterangan,
+                'status'       => $status,
                 'gate_id'      => $request->gate_id,
                 'created_at'   => $date,
             ];
@@ -117,7 +128,6 @@ class KehadiranController extends Controller
                 'jam_masuk'     => $request->jam_masuk,
                 'jam_keluar'    => $request->jam_keluar,
                 'status'        => $request->status,
-                'keterangan'    => $request->keterangan,
                 'gate_id'       => $request->gate_id,
                 'updated_at'    => $date,
             ];
