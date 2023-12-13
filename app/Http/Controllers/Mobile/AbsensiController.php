@@ -13,6 +13,7 @@ use App\Traits\HttpResponseModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AbsensiController extends Controller
 {
@@ -95,9 +96,9 @@ class AbsensiController extends Controller
             $waktiIstirahat = Setup::where('tipe', 'waktu_istirahat')->first();
 
             $present = Kehadiran::where('pegawai_id', $employe['id'])->first();
-            // dd($present);
-
+           
             if ($present && $present['jam_masuk']) {
+    
                 if (($timeNow < $waktiIstirahat['start'] || $timeNow > $waktiIstirahat['end']) && ($timeNow > $waktuKerja['end']) ) {
                     return [
                         'msg'  => 'pulang tepat waktu',
@@ -105,6 +106,7 @@ class AbsensiController extends Controller
                         'code' => 200
                     ];
                 }
+                
                 if (($timeNow < $waktiIstirahat['start'] || $timeNow > $waktiIstirahat['end']) && ($timeNow < $waktuKerja['end']) ) {
                     return [
                         'msg'  => 'terlalu cepat pulang',
@@ -170,6 +172,7 @@ class AbsensiController extends Controller
 
     public function presentPegawai(Request $request)
     {
+        DB::beginTransaction();
         $onTime = json_decode($this->getCurrentGate()->getContent(), true);
         info($onTime);
         if (!$onTime) {
@@ -182,6 +185,7 @@ class AbsensiController extends Controller
         }
 
         $writeLogs = $this->writeLogs($koordinateId);
+
         if (!$writeLogs || null) {
             return $this->error('logs', 500);
         }
@@ -189,9 +193,8 @@ class AbsensiController extends Controller
         try {
             $userId = Auth::user()->id;
             $pegawai = Pegawai::where('user_id', $userId)->first();
-
+            
             $status = $this->getPresentStatus($pegawai);
-
             if ($status['code'] !== 200) {
                 return response()->json($status, $status['code']);
             }
@@ -203,13 +206,12 @@ class AbsensiController extends Controller
                     "tanggal" => Carbon::now(),
                     "jam_masuk" => Carbon::now()->format('H:i:s'),
                     "status" => $status['msg'],
-                    "keterangan" => "",
                     "gate_id" => $onTime['data']
                 ];
     
                 $result = Kehadiran::create($payload);
             }
-
+            
             if ($status['sts'] === 3 || $status['sts'] === 4) {
                 $present = Kehadiran::where('pegawai_id', $pegawai['id'])->first();
                 $payload = [
@@ -222,7 +224,10 @@ class AbsensiController extends Controller
             }
 
             $response = $this->success(@$result ?? null, "success update data");
+
+            DB::commit();
         } catch (\Throwable $th) {
+            DB::rollBack();
             $response = $this->error($th->getMessage(), 500, $th, class_basename($this), __FUNCTION__ );
         }
         return response()->json($response, $response['code']);
@@ -232,18 +237,21 @@ class AbsensiController extends Controller
     {
         try {
             $payload = [
-                'start' => Carbon::createFromDate(request('start')),
-                'end'   => Carbon::createFromDate(request('end'))
+                'start' => Carbon::createFromDate(request('start')) ?? Carbon::now()->firstOfMonth()->toDateString(),
+                'end'   => Carbon::createFromDate(request('end')) ?? Carbon::now()->endOfMonth()->toDateString()
             ];
+            
             $userId  = Auth::user()->id;
             $pegawai = Pegawai::where('user_id', $userId)->first();
 
             $result = Kehadiran::where('pegawai_id', $pegawai['id'])
-            ->whereBetween('tanggal', [$payload['start'], $payload['end']])
+            ->when(request('start') || request('end'), function ($query) use ($payload) {
+                return $query->whereBetween('tanggal', [$payload['start'], $payload['end']]);
+            })
             ->select('id', 'tanggal', 'jam_masuk', 'jam_keluar', 'status')
             ->get();
 
-            $response = $this->success(@$result ?? null, "success update data");
+            $response = $this->success(@$result ?? null, "success get data");
         } catch (\Throwable $th) {
             $response = $this->error($th->getMessage(), 500, $th, class_basename($this), __FUNCTION__ );
         }
