@@ -40,9 +40,9 @@ class PegawaiController extends Controller
     public function store(Request $request)
     {
         try {
-            $date = Carbon::now();
             $fileUpload = $request->file('foto');
-            $nameFile = 'photo' . '_' . $date . '.' . $fileUpload->getClientOriginalExtension();
+            $nameFile = time(). '.' . $fileUpload->getClientOriginalExtension();
+            $fileUpload->move(public_path('storage/foto'), $nameFile);
 
             $data = [
                 'user_id'        => $request ->user_id       ,
@@ -56,14 +56,8 @@ class PegawaiController extends Controller
                 'agama'          => $request ->agama         ,
                 'jk'             => $request ->jk            ,
                 'no_hp'          => $request ->no_hp         ,
-                'created_at'     => $date                    ,
             ];
             $data = Pegawai::create($data);
-
-            if ($data) {
-                $filePath = public_path('storage/foto/');
-                $fileUpload->move($filePath, $nameFile);
-            }
             $result = [
                 'message' => 'success',
                 'data' => $data,
