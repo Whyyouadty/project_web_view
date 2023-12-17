@@ -12,6 +12,7 @@ class Pegawai extends Model
     protected $fillable = [
         'id',
         'user_id',
+        'foto',
         'nama',
         'nidn',
         'departement_id',

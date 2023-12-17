@@ -17,14 +17,14 @@ class PegawaiController extends Controller
             'user' => User::all(),
             'departement' => Departement::all(),
             'jabatan' => Jabatan::all(),
-            'pegawai' => Pegawai::with('user','departement','jabatan')->get(),
+            'pegawai' => Pegawai::with('user', 'departement', 'jabatan')->get(),
         );
         // return response()->json($data);
-        
+
         return view('pages.pegawai', ['data' => $data]);
     }
 
-    public function all() 
+    public function all()
     {
         $data =  Pegawai::all();
         return response()->json(
@@ -32,46 +32,55 @@ class PegawaiController extends Controller
                 'message' => 'success',
                 'data' => $data,
                 'code' => 200
-            ],200
+            ],
+            200
         );
     }
 
     public function store(Request $request)
     {
-       try {
-        $date = Carbon::now();
-        $data = array(
-            'user_id'=>$request->user_id,
-            'nama'=>$request->nama,
-            'nidn'=>$request->nidn,
-            'departement_id'=>$request->departement_id,
-            'jabatan_id'=>$request->jabatan_id,
-            'ttl'=>$request->ttl,
-            'alamat'=>$request->alamat,
-            'agama'=>$request->agama,
-            'jk'=>$request->jk,
-            'no_hp'=>$request->no_hp,
-            'created_at'=>$date,
-        );
-        $data = Pegawai::create($data);
-        $result = [
-            'message' => 'success',
-            'data' => $data,
-            'code' => 200
-        ];
-       } catch (\Throwable $th) {
-        $result = [
-            'message' => $th->getMessage(),
-            'code' => 500
-        ];
-       }
-        return response()->json($result, $result['code']);
+        try {
+            $date = Carbon::now();
+            $fileUpload = $request->file('foto');
+            $nameFile = 'photo' . '_' . $date . '.' . $fileUpload->getClientOriginalExtension();
 
+            $data = [
+                'user_id'        => $request ->user_id       ,
+                'foto'           => $nameFile                ,
+                'nama'           => $request ->nama          ,
+                'nidn'           => $request ->nidn          ,
+                'departement_id' => $request ->departement_id,
+                'jabatan_id'     => $request ->jabatan_id    ,
+                'ttl'            => $request ->ttl           ,
+                'alamat'         => $request ->alamat        ,
+                'agama'          => $request ->agama         ,
+                'jk'             => $request ->jk            ,
+                'no_hp'          => $request ->no_hp         ,
+                'created_at'     => $date                    ,
+            ];
+            $data = Pegawai::create($data);
+
+            if ($data) {
+                $filePath = public_path('storage/foto/');
+                $fileUpload->move($filePath, $nameFile);
+            }
+            $result = [
+                'message' => 'success',
+                'data' => $data,
+                'code' => 200
+            ];
+        } catch (\Throwable $th) {
+            $result = [
+                'message' => $th->getMessage(),
+                'code' => 500
+            ];
+        }
+        return response()->json($result, $result['code']);
     }
 
     public function getById($id)
     {
-		try {
+        try {
             $data = Pegawai::whereId($id)->first();
 
             if ($data) {
@@ -97,32 +106,32 @@ class PegawaiController extends Controller
 
     public function update(Request $request, $id)
     {
-		try {
-        $date = Carbon::now();
-        $data = [
-            'user_id'        => $request->       user_id,
-            'nama'           => $request->          nama,
-            'nidn'           => $request->          nidn,
-            'departement_id' => $request->departement_id,
-            'jabatan_id'     => $request->    jabatan_id,
-            'ttl'            => $request->           ttl,
-            'alamat'         => $request->        alamat,
-            'agama'          => $request->         agama,
-            'jk'             => $request->            jk,
-            'no_hp'          => $request->         no_hp,
-            'updated_at' => $date,
-        ];
-        $data = Pegawai::where(['id' => $id])->update($data);
-        $result = [
-            'message' => 'success',
-            'data' => $data,
-            'code' => 200
-        ];
+        try {
+            $date = Carbon::now();
+            $data = [
+                'user_id'        => $request->user_id,
+                'nama'           => $request->nama,
+                'nidn'           => $request->nidn,
+                'departement_id' => $request->departement_id,
+                'jabatan_id'     => $request->jabatan_id,
+                'ttl'            => $request->ttl,
+                'alamat'         => $request->alamat,
+                'agama'          => $request->agama,
+                'jk'             => $request->jk,
+                'no_hp'          => $request->no_hp,
+                'updated_at' => $date,
+            ];
+            $data = Pegawai::where(['id' => $id])->update($data);
+            $result = [
+                'message' => 'success',
+                'data' => $data,
+                'code' => 200
+            ];
         } catch (\Throwable $th) {
-        $result = [
-            'message' => $th->getMessage(),
-            'code' => 500
-        ];
+            $result = [
+                'message' => $th->getMessage(),
+                'code' => 500
+            ];
         }
         return response()->json($result, $result['code']);
     }
