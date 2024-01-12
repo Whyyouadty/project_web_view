@@ -35,7 +35,6 @@ class AbsensiController extends Controller
         try {
             $today = Carbon::today();
             $data = Gate::whereDate('created_at', $today)->first();
-
             if ($data) {
                 $isOnTime = @$this->isONTimePresent($data) ?? null;
             } else {
@@ -172,9 +171,10 @@ class AbsensiController extends Controller
 
     public function presentPegawai(Request $request)
     {
+        info(json_encode($request->all()));
         DB::beginTransaction();
         $onTime = json_decode($this->getCurrentGate()->getContent(), true);
-        info($onTime);
+
         if (!$onTime) {
             return $this->error('gate', 500);
         }
@@ -243,6 +243,10 @@ class AbsensiController extends Controller
             
             $userId  = Auth::user()->id;
             $pegawai = Pegawai::where('user_id', $userId)->first();
+
+            if(!$pegawai) {
+                return $this->error('Pegawai tidak ditemukan', 404);
+            }
 
             $result = Kehadiran::where('pegawai_id', $pegawai['id'])
             ->when(request('start') || request('end'), function ($query) use ($payload) {

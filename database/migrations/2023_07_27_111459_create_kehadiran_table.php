@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('koordinat_id')->references('id')->on('koordinat');
             $table->date('tanggal');
             $table->time('jam_masuk');
-            $table->time('jam_keluar');
+            $table->time('jam_keluar')->nullable();
             $table->string('status');
             $table->foreignId('gate_id')->references('id')->on('gate');
             $table->timestamps();

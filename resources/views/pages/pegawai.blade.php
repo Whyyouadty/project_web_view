@@ -16,6 +16,7 @@
                             <tr>
                                 <th>NO</th>
                                 <th>User</th>
+                                <th>Foto</th>
                                 <th>Nama</th>
                                 <th>NIDN</th>
                                 <th>Departement</th>
@@ -36,6 +37,7 @@
                                 <tr>
                                     <td style="width: 10%">{{ $no++ }}</td>
                                     <td style="width: 10%">{{ $item->user->email }}</td>
+                                    <td style="width: 10%"><img src="{{asset('storage/foto/'.$item->foto)}}" style="width: 70%" alt=""></td>
                                     <td style="width: 10%">{{ $item->nama }}</td>
                                     <td style="width: 10%">{{ $item->nidn }}</td>
                                     <td style="width: 10%">{{ $item->departement->nama_departement }}</td>
@@ -215,6 +217,7 @@
                 $('#nama-alert').html('                   ');
                 $('#modal-data').modal('show');
                 $('#user_id').val(res.data.user_id);
+                $('#foto').val(res.data.foto);
                 $('#nama').val(res.data.nama);
                 $('#nidn').val(res.data.nidn);
                 $('#departement_id').val(res.data.departement_id);

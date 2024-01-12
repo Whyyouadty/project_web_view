@@ -41,26 +41,29 @@ class PegawaiController extends Controller
     {
         try {
             $fileUpload = $request->file('foto');
-            $nameFile = time(). '.' . $fileUpload->getClientOriginalExtension();
+            $nameFile = time() . '.' . $fileUpload->getClientOriginalExtension();
             $fileUpload->move(public_path('storage/foto'), $nameFile);
 
             $data = [
-                'user_id'        => $request ->user_id       ,
-                'foto'           => $nameFile                ,
-                'nama'           => $request ->nama          ,
-                'nidn'           => $request ->nidn          ,
-                'departement_id' => $request ->departement_id,
-                'jabatan_id'     => $request ->jabatan_id    ,
-                'ttl'            => $request ->ttl           ,
-                'alamat'         => $request ->alamat        ,
-                'agama'          => $request ->agama         ,
-                'jk'             => $request ->jk            ,
-                'no_hp'          => $request ->no_hp         ,
+                'user_id'        => $request->user_id,
+                'foto'           => $nameFile,
+                'nama'           => $request->nama,
+                'nidn'           => $request->nidn,
+                'departement_id' => $request->departement_id,
+                'jabatan_id'     => $request->jabatan_id,
+                'ttl'            => $request->ttl,
+                'alamat'         => $request->alamat,
+                'agama'          => $request->agama,
+                'jk'             => $request->jk,
+                'no_hp'          => $request->no_hp,
             ];
             $data = Pegawai::create($data);
             $result = [
                 'message' => 'success',
-                'data' => $data,
+                'data' => [
+                    'foto_url' => url('storage/foto/' . $nameFile),
+                    // ... (data lainnya)
+                ],
                 'code' => 200
             ];
         } catch (\Throwable $th) {
@@ -100,6 +103,9 @@ class PegawaiController extends Controller
 
     public function update(Request $request, $id)
     {
+        $fileUpload = $request->file('foto');
+        $nameFile = time() . '.' . $fileUpload->getClientOriginalExtension();
+        $fileUpload->move(public_path('storage/foto'), $nameFile);
         try {
             $date = Carbon::now();
             $data = [
@@ -118,7 +124,10 @@ class PegawaiController extends Controller
             $data = Pegawai::where(['id' => $id])->update($data);
             $result = [
                 'message' => 'success',
-                'data' => $data,
+                'data' => [
+                    'foto_url' => url('storage/foto/' . $nameFile),
+                    // ... (data lainnya)
+                ],
                 'code' => 200
             ];
         } catch (\Throwable $th) {

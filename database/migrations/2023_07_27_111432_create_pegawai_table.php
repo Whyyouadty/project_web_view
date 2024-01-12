@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('alamat');
             $table->string('agama');
             $table->string('jk');
-            $table->integer('no_hp');
+            $table->string('no_hp');
             $table->timestamps();
         });
     }
