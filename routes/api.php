@@ -98,9 +98,9 @@ Route::prefix('w1/kehadiran')->controller(KehadiranController::class)->group(fun
 	Route::delete ('/{id}' , 'delete' );
 });
 
-Route::prefix('mob/profile')->controller(PegawaiProfileController::class)->middleware('auth:api')->group(function () {
-	Route::get('/', 'getCurrentUserData');
-	Route::get('/kehadiran', 'getCurrnetUserKehadiran');
+Route::prefix('mob/profile')->middleware('auth:api')->group(function () {
+	Route::get('/', [PegawaiProfileController::class, 'getCurrentUserData']);
+	Route::get('/kehadiran', [PegawaiProfileController::class, 'getCurrnetUserKehadiran']);
 });
 
 Route::prefix('mob/absensi')->controller(AbsensiController::class)->middleware('auth:api')->group(function () {

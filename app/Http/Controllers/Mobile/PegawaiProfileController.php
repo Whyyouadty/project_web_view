@@ -31,8 +31,11 @@ class PegawaiProfileController extends Controller
         try {
             $userId = Auth::user()->id;
             $pegawai = Pegawai::where('user_id', $userId)->first();
+            if (!$pegawai) {
+                $response = $this->error("Data pegawai tidak ditemukan", 404);
+                return response()->json($response, $response['code']);
+            }
             $kehadiran = Kehadiran::where('pegawai_id', $pegawai->id)->get();
-
             $response = $this->success($kehadiran, "success getting data");
         } catch (\Throwable $th) {
             $response = $this->error($th->getMessage(), 500, $th, class_basename($this), __FUNCTION__ );
