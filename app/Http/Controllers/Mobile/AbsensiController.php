@@ -193,8 +193,8 @@ class AbsensiController extends Controller
 
         // Hitung jarak
         $distance = $R * $c;
-
-        return number_format($distance, 2);
+        // info(floor($distance));
+        return floor($distance);
     }
 
     //Check avaible day
@@ -245,6 +245,13 @@ class AbsensiController extends Controller
         ];
     }
 
+    private function getPegawaiData() {
+        $model = new Pegawai;
+        $pegawai = $model->where("user_id", auth()->user()->id)->first();
+
+        return $pegawai;
+    }
+
     public function presentPegawai(Request $request)
     {
         $lat1 = $request->lat;
@@ -255,10 +262,20 @@ class AbsensiController extends Controller
         $lon2 = config('coordinat.longitude');
 
         try {
+            $pegawai = $this->getPegawaiData();
+
+            if (!$pegawai) {
+                return response()->json([
+                    "message" => "data pegawai tidak ditemukan"
+                ], 404);
+            }
+
             $statusKehadiran = "";
             $now = Carbon::now();
             
-            if ($this->haversine_distance($lat1, $lon1, $lat2, $lon2) > 30) {
+            $distanceLocation = $this->haversine_distance($lat1, $lon1, $lat2, $lon2);
+            // info($distanceLocation);
+            if ( $distanceLocation > 30) {
                 return response()->json([
                     "message" => "kamu tidak berada pada lingkungan absensi"
                 ], 400);
@@ -280,7 +297,7 @@ class AbsensiController extends Controller
             if (!$presentDay) {
                 // Absen sebagai jam masuk, perlu mengecek keterlambatan
                 $kehadiran->create([
-                    "pegawai_id" => $request->pegawai_id,
+                    "pegawai_id" => $pegawai->id,
                     "tanggal"    => $now->format('Y-m-d'),
                     "jam_masuk"  => $now->format('H:i:s'),
                     "status"     => $statusKehadiran,
@@ -295,7 +312,7 @@ class AbsensiController extends Controller
             if (!$presentDay->jam_keluar) {
                 // Absen sebagai jam pulang, perlu mengecek keterlambatan
                 $kehadiran->where("id", $presentDay->id)->update([
-                    "pegawai_id" => $request->pegawai_id ,
+                    "pegawai_id" => $pegawai->id,
                     "tanggal"    => $now->format('Y-m-d'),
                     "jam_keluar" => $now->format('H:i:s'),
                     "created_at" => $now,
@@ -310,7 +327,8 @@ class AbsensiController extends Controller
                 "message" => "kamu sudah absen hari ini"
             ], 400);
         } catch (\Throwable $th) {
-            dd($th->getMessage());
+            return response()->json($th->getMessage(), 500);
+            info($th->getMessage());
         }
     }
 

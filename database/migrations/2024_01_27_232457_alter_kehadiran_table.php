@@ -26,7 +26,7 @@ return new class extends Migration
                 $table->string('latitude')->nullable()->after('status');
             }
             if (!Schema::hasColumn('kehadiran', 'longitude')) {
-                $table->string('longitude')->nullable()->after('longitude');
+                $table->string('longitude')->nullable()->after('status');
             }
             $table->string('jam_keluar')->nullable()->change();
         });
