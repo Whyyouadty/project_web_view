@@ -325,6 +325,10 @@ class AbsensiController extends Controller
             $userId  = Auth::user()->id;
             $pegawai = Pegawai::where('user_id', $userId)->first();
 
+            if (!$userId) {
+                return response()->json("Pegawai tidak ditemukan", 404);
+            }
+
             $result = Kehadiran::where('pegawai_id', $pegawai['id'])
                 ->when(request('start') || request('end'), function ($query) use ($payload) {
                     return $query->whereBetween('tanggal', [$payload['start'], $payload['end']]);
