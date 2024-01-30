@@ -41,10 +41,10 @@ class AbsensiController extends Controller
             } else {
                 $isOnTime = null;
             }
-            
+
             $response = $this->success($isOnTime ? @$data['id'] : null, "success getting data");
         } catch (\Throwable $th) {
-            $response = $this->error($th->getMessage(), 500, $th, class_basename($this), __FUNCTION__ );
+            $response = $this->error($th->getMessage(), 500, $th, class_basename($this), __FUNCTION__);
         }
         return response()->json($response, $response['code']);
     }
@@ -87,7 +87,8 @@ class AbsensiController extends Controller
         }
     }
 
-    public function getPresentStatus($employe) {
+    public function getPresentStatus($employe)
+    {
         try {
             $date    = new Carbon;
             $timeNow = $date->toTimeString();
@@ -96,25 +97,25 @@ class AbsensiController extends Controller
             $waktiIstirahat = Setup::where('tipe', 'waktu_istirahat')->first();
 
             $present = Kehadiran::where('pegawai_id', $employe['id'])->first();
-           
+
             if ($present && $present['jam_masuk']) {
-    
-                if (($timeNow < $waktiIstirahat['start'] || $timeNow > $waktiIstirahat['end']) && ($timeNow > $waktuKerja['end']) ) {
+
+                if (($timeNow < $waktiIstirahat['start'] || $timeNow > $waktiIstirahat['end']) && ($timeNow > $waktuKerja['end'])) {
                     return [
                         'msg'  => 'pulang tepat waktu',
                         'sts'  => 3, //pulang tepat waktu
                         'code' => 200
                     ];
                 }
-                
-                if (($timeNow < $waktiIstirahat['start'] || $timeNow > $waktiIstirahat['end']) && ($timeNow < $waktuKerja['end']) ) {
+
+                if (($timeNow < $waktiIstirahat['start'] || $timeNow > $waktiIstirahat['end']) && ($timeNow < $waktuKerja['end'])) {
                     return [
                         'msg'  => 'terlalu cepat pulang',
                         'sts'  => 4, //terlalu cepat pulang
                         'code' => 200
                     ];
                 }
-                
+
                 if (($timeNow >= $waktiIstirahat || $timeNow <= $waktiIstirahat)) {
                     return [
                         'msg'  => 'waktu istirahat',
@@ -131,14 +132,14 @@ class AbsensiController extends Controller
             }
 
             if ($present && (!$present['jam_masuk'])) {
-                if (($timeNow < $waktiIstirahat['start'] || $timeNow > $waktiIstirahat['end']) && ($timeNow > Carbon::createFromTimeString($waktuKerja['start'])->toTimeString()) ) {
+                if (($timeNow < $waktiIstirahat['start'] || $timeNow > $waktiIstirahat['end']) && ($timeNow > Carbon::createFromTimeString($waktuKerja['start'])->toTimeString())) {
                     return [
                         'msg'  => 'datang terlambat',
                         'sts'  => 2, //terlambat
                         'code' => 200
                     ];
                 }
-            
+
                 return [
                     'msg'  => 'datang tepat waktu',
                     'sts'  => 1, //tepat waktu
@@ -147,14 +148,14 @@ class AbsensiController extends Controller
             }
 
             if (!$present) {
-                if (($timeNow > Carbon::createFromTimeString($waktuKerja['start'])->addHours()->toTimeString()) ) {
+                if (($timeNow > Carbon::createFromTimeString($waktuKerja['start'])->addHours()->toTimeString())) {
                     return [
                         'msg'  => 'datang terlambat',
                         'sts'  => 2, //terlambat
                         'code' => 200
                     ];
                 }
-            
+
                 return [
                     'msg'  => 'datang tepat waktu',
                     'sts'  => 1, //tepat waktu
@@ -170,69 +171,149 @@ class AbsensiController extends Controller
         }
     }
 
+    // Untuk mengukur jarak dari koordinat satu ke lainnya
+    private function haversine_distance($lat1, $lon1, $lat2, $lon2)
+    {
+        // Konversi koordinat dari derajat ke radian
+        $lat1 = deg2rad($lat1);
+        $lon1 = deg2rad($lon1);
+        $lat2 = deg2rad($lat2);
+        $lon2 = deg2rad($lon2);
+
+        // Hitung selisih lintang dan bujur
+        $dlat = $lat2 - $lat1;
+        $dlon = $lon2 - $lon1;
+
+        // Rumus Haversine
+        $a = sin($dlat / 2) ** 2 + cos($lat1) * cos($lat2) * sin($dlon / 2) ** 2;
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+
+        // Jari-jari Bumi dalam meter
+        $R = 6371000;
+
+        // Hitung jarak
+        $distance = $R * $c;
+
+        return number_format($distance, 2);
+    }
+
+    //Check avaible day
+    private function checkAvaiblePresentDay()
+    {
+        $auth = auth()->user()->id;
+        $nowDay = Carbon::now()->toDateString();
+
+        $setupModel = new Kehadiran;
+        $setupData = $setupModel
+            ->select(
+                'kehadiran.*'
+            )
+            ->leftJoin('pegawai as pg', 'kehadiran.pegawai_id', '=', 'pg.id')
+            ->leftJoin('user as usr', 'pg.user_id', '=', 'usr.id')
+            ->where('usr.id', $auth)
+            ->whereDate('kehadiran.created_at', $nowDay)
+            ->first();
+
+        return $setupData;
+    }
+
+    // Check avaible present time
+    private function checkAvaiblePresentTime()
+    {
+        $setupModel = new Setup;
+        $setupData = $setupModel->first();
+
+        //jika data tidak ditemukan
+        if (!$setupData) {
+            return false;
+        }
+
+        $sDate = Carbon::createFromTimeString($setupData->start);
+        $eDate = Carbon::createFromTimeString($setupData->end);
+
+        $now = Carbon::now();
+
+        if ($now->greaterThan($sDate) && $now->lessThan($eDate)) {
+            return [
+                "avaible" => true,
+                "status" => $now->greaterThan($sDate->addMinute(30)) ? "lambat" : "tepat waktu"
+            ];
+        }
+        return [
+            "avaible" => false,
+            "status" => null
+        ];
+    }
+
     public function presentPegawai(Request $request)
     {
-        DB::beginTransaction();
-        $onTime = json_decode($this->getCurrentGate()->getContent(), true);
-        info($onTime);
-        if (!$onTime) {
-            return $this->error('gate', 500);
-        }
+        $lat1 = $request->lat;
+        $lon1 = $request->lon;
 
-        $koordinateId = $this->saveCoordinate($request->latitude, $request->longtitude);
-        if (!$koordinateId || null) {
-            return $this->error('coordinate', 500);
-        }
-
-        $writeLogs = $this->writeLogs($koordinateId);
-
-        if (!$writeLogs || null) {
-            return $this->error('logs', 500);
-        }
+        // Koordinat kedua
+        $lat2 = config('coordinat.latitude');
+        $lon2 = config('coordinat.longitude');
 
         try {
-            $userId = Auth::user()->id;
-            $pegawai = Pegawai::where('user_id', $userId)->first();
+            $statusKehadiran = "";
+            $now = Carbon::now();
             
-            $status = $this->getPresentStatus($pegawai);
-            if ($status['code'] !== 200) {
-                return response()->json($status, $status['code']);
+            if ($this->haversine_distance($lat1, $lon1, $lat2, $lon2) > 30) {
+                return response()->json([
+                    "message" => "kamu tidak berada pada lingkungan absensi"
+                ], 400);
             }
 
-            if ($status['sts'] === 1 || $status['sts'] === 2) {
-                $payload = [
-                    "koordinat_id" => $koordinateId,
-                    "pegawai_id" => $pegawai['id'],
-                    "tanggal" => Carbon::now(),
-                    "jam_masuk" => Carbon::now()->format('H:i:s'),
-                    "status" => $status['msg'],
-                    "gate_id" => $onTime['data']
-                ];
-    
-                $result = Kehadiran::create($payload);
-            }
-            
-            if ($status['sts'] === 3 || $status['sts'] === 4) {
-                $present = Kehadiran::where('pegawai_id', $pegawai['id'])->first();
-                $payload = [
-                    "jam_keluar" => Carbon::now()->format('H:i:s'),
-                    "status"     => $present['status'] . ', ' . $status['msg'],
-                    "updated_at" => Carbon::now()
-                ];
-                
-                $result  = Kehadiran::whereId($present['id'])->update($payload);
+            $avaibleTime     = $this->checkAvaiblePresentTime();
+            $statusKehadiran = $avaibleTime['status'];
+
+            if (!$avaibleTime['avaible']) {
+                return response()->json([
+                    "message" => "waktu absensi tidak berlaku"
+                ], 400);
             }
 
-            $response = $this->success(@$result ?? null, "success update data");
+            $presentDay = $this->checkAvaiblePresentDay();
 
-            DB::commit();
+            $kehadiran = new Kehadiran;
+
+            if (!$presentDay) {
+                // Absen sebagai jam masuk, perlu mengecek keterlambatan
+                $kehadiran->create([
+                    "pegawai_id" => $request->pegawai_id,
+                    "tanggal"    => $now->format('Y-m-d'),
+                    "jam_masuk"  => $now->format('H:i:s'),
+                    "status"     => $statusKehadiran,
+                    "created_at" => $now,
+                    "updated_at" => $now,
+                ]);
+                return response()->json([
+                    "message" => "berhasil melakukan absen datang"
+                ], 200);
+            }
+
+            if (!$presentDay->jam_keluar) {
+                // Absen sebagai jam pulang, perlu mengecek keterlambatan
+                $kehadiran->where("id", $presentDay->id)->update([
+                    "pegawai_id" => $request->pegawai_id ,
+                    "tanggal"    => $now->format('Y-m-d'),
+                    "jam_keluar" => $now->format('H:i:s'),
+                    "created_at" => $now,
+                    "updated_at" => $now,
+                ]);
+                return response()->json([
+                    "message" => "berhasil melakukan pulang"
+                ], 200);
+            }
+
+            return response()->json([
+                "message" => "kamu sudah absen hari ini"
+            ], 400);
         } catch (\Throwable $th) {
-            DB::rollBack();
-            $response = $this->error($th->getMessage(), 500, $th, class_basename($this), __FUNCTION__ );
+            dd($th->getMessage());
         }
-        return response()->json($response, $response['code']);
     }
-    
+
     public function getCurrentPresentHistory()
     {
         try {
@@ -240,20 +321,20 @@ class AbsensiController extends Controller
                 'start' => Carbon::createFromDate(request('start')) ?? Carbon::now()->firstOfMonth()->toDateString(),
                 'end'   => Carbon::createFromDate(request('end')) ?? Carbon::now()->endOfMonth()->toDateString()
             ];
-            
+
             $userId  = Auth::user()->id;
             $pegawai = Pegawai::where('user_id', $userId)->first();
 
             $result = Kehadiran::where('pegawai_id', $pegawai['id'])
-            ->when(request('start') || request('end'), function ($query) use ($payload) {
-                return $query->whereBetween('tanggal', [$payload['start'], $payload['end']]);
-            })
-            ->select('id', 'tanggal', 'jam_masuk', 'jam_keluar', 'status')
-            ->get();
+                ->when(request('start') || request('end'), function ($query) use ($payload) {
+                    return $query->whereBetween('tanggal', [$payload['start'], $payload['end']]);
+                })
+                ->select('id', 'tanggal', 'jam_masuk', 'jam_keluar', 'status')
+                ->get();
 
             $response = $this->success(@$result ?? null, "success get data");
         } catch (\Throwable $th) {
-            $response = $this->error($th->getMessage(), 500, $th, class_basename($this), __FUNCTION__ );
+            $response = $this->error($th->getMessage(), 500, $th, class_basename($this), __FUNCTION__);
         }
         return response()->json($response, $response['code']);
     }

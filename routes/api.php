@@ -103,8 +103,7 @@ Route::prefix('mob/profile')->middleware('auth:api')->group(function () {
 	Route::get('/kehadiran', [PegawaiProfileController::class, 'getCurrnetUserKehadiran']);
 });
 
-Route::prefix('mob/absensi')->controller(AbsensiController::class)->middleware('auth:api')->group(function () {
-	Route::get('/gate', 'getCurrentGate');
-	Route::post('/save', 'presentPegawai');
-	Route::get('/history', 'getCurrentPresentHistory');
+Route::prefix('mob/absensi')->middleware('auth:api')->group(function () {
+	Route::post('/save', [AbsensiController::class, 'presentPegawai']);
+	Route::get('/history', [AbsensiController::class,'getCurrentPresentHistory']);
 });
